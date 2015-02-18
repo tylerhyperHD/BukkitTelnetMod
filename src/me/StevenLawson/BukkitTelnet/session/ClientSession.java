@@ -215,28 +215,6 @@ public final class ClientSession extends Thread
 
         boolean passAuth = false;
 
-        // Pre-authenticate IP addresses
-        if (clientAddress != null)
-        {
-            final Map<String, List<String>> admins = TelnetConfig.getInstance().getConfigEntries().getAdmins();
-
-            // For every admin
-            for (String name : admins.keySet())
-            {
-
-                // For every IP of each admin
-                for (String ip : admins.get(name))
-                {
-                    if (Util.fuzzyIpMatch(ip, clientAddress, 3))
-                    {
-                        passAuth = true;
-                        this.username = name;
-                        break;
-                    }
-                }
-            }
-        }
-
         // TelnetPreLoginEvent authentication
         final TelnetPreLoginEvent event = new TelnetPreLoginEvent(clientAddress, username, passAuth);
         Bukkit.getServer().getPluginManager().callEvent(event);

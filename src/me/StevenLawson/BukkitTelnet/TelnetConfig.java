@@ -25,21 +25,6 @@ public class TelnetConfig
         configEntries.setPort(config.getInt("port"));
         configEntries.setPassword(config.getString("password"));
 
-        configEntries.clearAdmins();
-        if (config.isConfigurationSection("admins"))
-        {
-            for (String admin : config.getConfigurationSection("admins").getKeys(false))
-            {
-
-                if (!config.isList("admins." + admin))
-                {
-                    continue;
-                }
-
-                configEntries.addAdmin(admin, config.getStringList("admins." + admin));
-            }
-        }
-
         if (configEntries.getPassword().isEmpty())
         {
             configEntries.setPassword(config.getDefaultConfig().getString("password"));
@@ -58,12 +43,6 @@ public class TelnetConfig
         private int port;
         private String address;
         private String password;
-        private final Map<String, List<String>> admins;
-
-        private SimpleConfigEntries()
-        {
-            admins = new HashMap<String, List<String>>();
-        }
 
         public int getPort()
         {
@@ -93,21 +72,6 @@ public class TelnetConfig
         public void setPassword(String password)
         {
             this.password = password;
-        }
-
-        public Map<String, List<String>> getAdmins()
-        {
-            return Collections.unmodifiableMap(admins);
-        }
-
-        private void clearAdmins()
-        {
-            admins.clear();
-        }
-
-        private void addAdmin(String name, List<String> ips)
-        {
-            admins.put(name, ips);
         }
     }
 
